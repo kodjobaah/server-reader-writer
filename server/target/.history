@@ -1,0 +1,89 @@
+universal:packageBin
+stage
+project writer
+stage
+project writer
+stage
+project writer
+stage
+project writer
+clean
+stage
+project server
+stage
+project writer
+stage
+project server
+stage
+project writer
+stage
+project writer
+stage
+reload
+project reader
+stage
+project server
+stage
+project server
+stage
+project reader
+stage
+project reader
+stage
+reload
+project server
+stage
+project server
+stage
+show version
+project reader
+stage
+project writer
+stage
+project server
+stage
+project reader
+stage
+clean
+stage
+project reader
+stage
+project server
+stage
+project reader
+stage
+project server
+stage
+project reader
+stage
+project reader
+stage
+project server
+stage
+project reader
+stage
+project server
+stage
+project stage
+project server
+stage
+project server
+stage
+project reader
+sbt stage
+stage
+project server
+stage
+project reader
+project server
+stage
+project reader
+stage
+project server
+stage
+project stage
+project server
+stage
+project reader
+stage
+project reader
