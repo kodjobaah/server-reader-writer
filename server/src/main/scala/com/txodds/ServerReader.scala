@@ -24,7 +24,7 @@ class ServerReader(context: ZMQ.Context, numbersQueue: LinkedBlockingQueue[Seq[I
     val server = new ServerReaderOperations(context, numbersQueue)
     server.start()
 
-    val monitor = new MonitorConnection(context, "server-reader", monitorName)
+    val monitor = new ServerReaderMonitorConnection(context, "server-reader", monitorName, server)
     monitor.start()
 
     ZMQ.proxy(frontend, backend, null)

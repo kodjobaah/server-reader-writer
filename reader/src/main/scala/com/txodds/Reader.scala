@@ -16,10 +16,10 @@ class Reader(context: ZMQ.Context) extends Thread {
     val monitorName = "reader"
     frontend.monitor("inproc://monitor.socket." + monitorName, ZMQ.EVENT_ALL)
 
-    val monitor = new MonitorConnection(context, "reader", monitorName)
+    val readerOperations = new ReaderOperations(context, frontend)
+    val monitor = new ReaderMonitorConnection(context, "reader", monitorName, readerOperations)
     monitor.start()
 
-    val readerOperations = new ReaderOperations(context, frontend)
     readerOperations.start()
   }
 }

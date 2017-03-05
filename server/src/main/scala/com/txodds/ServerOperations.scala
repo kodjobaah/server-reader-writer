@@ -4,6 +4,7 @@ import java.nio.charset.Charset
 import java.util.concurrent.LinkedBlockingQueue
 
 import com.redis.RedisClient
+import org.slf4j.{ Logger, LoggerFactory }
 import org.zeromq.ZMQ
 
 import scala.collection.immutable.Seq
@@ -19,6 +20,7 @@ object ServerOperations {
  */
 class ServerOperations(context: ZMQ.Context, numbersQueue: LinkedBlockingQueue[Seq[Int]]) extends Thread {
 
+  val log: Logger = LoggerFactory.getLogger(classOf[ServerOperations])
   import ServerOperations._
   val redis = new RedisClient("localhost", 6379)
   import java.util.concurrent.ThreadLocalRandom
@@ -51,7 +53,7 @@ class ServerOperations(context: ZMQ.Context, numbersQueue: LinkedBlockingQueue[S
         }
 
         if (!itemsToQueue.isEmpty) itemsToQueue.map(element => numbersQueue.add(element))
-        println("---number of items in qeue[" + numbersQueue.size() + "]")
+        log.info("---number of items in qeue[{}]", numbersQueue.size())
       }
     }
 
@@ -67,6 +69,7 @@ class ServerOperations(context: ZMQ.Context, numbersQueue: LinkedBlockingQueue[S
   def performOperation(message: List[String], socket: ZMQ.Socket) {
     var request: String = message.head
 
+    log.info("--- receive[" + request + "]")
     val response = s"""(${ThreadLocalRandom.current().nextInt(1, 200)}, ${ThreadLocalRandom.current().nextInt(1, 200)}"""
     if (!request.equalsIgnoreCase("0")) {
       val data = message.mkString(",")
@@ -76,11 +79,6 @@ class ServerOperations(context: ZMQ.Context, numbersQueue: LinkedBlockingQueue[S
     }
     socket.send(response)
 
-    //socket.send("ok")
-    /*
-    socket.send(identifier, ZMQ.SNDMORE)
-    socket.send("TERMINATE")
-     */
   }
 
   def retrieveRequest(socket: ZMQ.Socket): List[String] = {

@@ -4,9 +4,34 @@ Simple Reader, Writer, Server app
 =======================
 
 To use this application you will need to install
-1. zeromq
-2. git://github.com/zeromq/jzmq.git
+* zeromq
+* git://github.com/zeromq/jzmq.git
+* redis
 
-To compile and test
-1. sbt stage
-2. ./target/universal/stage/bin/txodds
+In order to use the app..you will need to start the server application first
+and then you can start and stop the reader/writer in any order you want.
+
+# Compilation
+
+* sbt 
+* project reader
+* stage
+* project server
+* stage
+* project writer
+* stage
+
+# Running
+
+### server
+* cd <project-home>/server
+* ./target/universal/stage/bin/server
+
+
+### reader
+* cd <project-home>/reader
+* ./target/universal/stage/bin/reader
+
+### writer
+* cd <project-home>/writer
+* ./target/universal/stage/bin/writer

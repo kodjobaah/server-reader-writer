@@ -14,14 +14,17 @@ class ReaderOperations(context: ZMQ.Context, socket: ZMQ.Socket) extends Thread 
   val jmxMonitoring = new JMXMonitoring("reader")
   jmxMonitoring.register(monitorInfo)
 
-  val q = EvictingQueue.create[String](1000)
+  @volatile var q = EvictingQueue.create[String](1000)
+
+  def sendStartMessage(): Unit = {
+    val uuid = java.util.UUID.randomUUID.toString
+    val requestMessage = s"""($uuid, 0)"""
+    log.debug("sending message[" + requestMessage + "]")
+    socket.send(requestMessage, 0)
+  }
 
   override def run() {
 
-    val uuid = java.util.UUID.randomUUID.toString
-    val requestMessage = s"""($uuid, 0)"""
-    println("sending message[" + requestMessage + "]")
-    socket.send(requestMessage, 0)
     var message: List[String] = List()
     while (!Thread.currentThread.isInterrupted) {
       message = retrieveRequest(socket)
@@ -36,6 +39,8 @@ class ReaderOperations(context: ZMQ.Context, socket: ZMQ.Socket) extends Thread 
   def performOperation(message: List[String], socket: ZMQ.Socket) {
 
     val msg = message.reverse.tail.reverse
+
+    log.debug("count[" + msg.length + "] content[" + msg.mkString(","))
     def findOutSequence(cur: List[String], prevSequence: Option[Int]): List[String] = {
       if (cur.nonEmpty) {
         val value = cur.head.split(",")
@@ -54,7 +59,6 @@ class ReaderOperations(context: ZMQ.Context, socket: ZMQ.Socket) extends Thread 
       }
     }
 
-    println("count[" + msg.size + "] ----[" + msg.mkString(":") + "]")
     ReaderMonitor.updateTotals(msg.length)
     ReaderMonitor.updateInflight(q.size())
 

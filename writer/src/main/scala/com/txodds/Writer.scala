@@ -17,7 +17,7 @@ class Writer(context: ZMQ.Context) extends Thread {
     val writerOperations = new WriterOperations(context, frontend)
     writerOperations.start()
 
-    val monitor = new MonitorConnection(context, "writer", monitorName)
+    val monitor = new WriterMonitorConnection(context, "writer", monitorName, writerOperations)
     monitor.start()
 
   }
