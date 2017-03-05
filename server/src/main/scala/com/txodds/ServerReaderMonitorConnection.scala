@@ -15,7 +15,7 @@ class ServerReaderMonitorConnection(context: ZMQ.Context, from: String, monitorN
   val monitor = socket.connect("inproc://monitor.socket." + monitorName)
 
   override def run() {
-    while (true) {
+    while (!Thread.currentThread.isInterrupted) {
 
       val zmqEvent: ZMQ.Event = ZMQ.Event.recv(socket)
       assert(zmqEvent != null)

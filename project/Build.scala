@@ -12,6 +12,8 @@ object Dependencies {
   val apacheLogback = "ch.qos.logback"      %   "logback-classic"           % "1.0.13"
   val redis =  "net.debasishg" %% "redisclient" % "3.3"
   val mbeans = "com.tzavellas" % "sse-jmx" % "0.4.1"
+  val scalaTest =  "org.scalatest" % "scalatest_2.11" % "3.0.1"
+
 
 }
 
@@ -50,7 +52,8 @@ object TxOddsBuild extends Build {
     apacheCommonsCollections,
     guava,
     redis,
-    mbeans
+    mbeans,
+    scalaTest
   )
 
   val commonResolvers = Seq("Spray repository" at "http://repo.spray.io/",

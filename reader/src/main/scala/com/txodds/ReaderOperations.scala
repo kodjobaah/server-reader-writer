@@ -3,6 +3,7 @@ package com.txodds
 import java.nio.charset.Charset
 
 import com.google.common.collect.EvictingQueue
+import com.txodds.helper.ReaderHelper
 import com.txodds.montior.{ JMXMonitoring, ReaderJmx, ReaderMonitor }
 import org.slf4j.{ Logger, LoggerFactory }
 import org.zeromq.ZMQ
@@ -41,28 +42,11 @@ class ReaderOperations(context: ZMQ.Context, socket: ZMQ.Socket) extends Thread 
     val msg = message.reverse.tail.reverse
 
     log.debug("count[" + msg.length + "] content[" + msg.mkString(","))
-    def findOutSequence(cur: List[String], prevSequence: Option[Int]): List[String] = {
-      if (cur.nonEmpty) {
-        val value = cur.head.split(",")
-        val curSequence = value(1).substring(0, value(1).length - 1).trim.toInt
-        if (prevSequence.nonEmpty) {
-          if ((prevSequence.get + 1) != curSequence) {
-            findOutSequence(cur.tail, Option(curSequence)) ++ value
-          } else {
-            findOutSequence(cur.tail, Option(curSequence))
-          }
-        } else {
-          findOutSequence(cur.tail, Option(curSequence))
-        }
-      } else {
-        List.empty[String]
-      }
-    }
 
     ReaderMonitor.updateTotals(msg.length)
     ReaderMonitor.updateInflight(q.size())
 
-    val itemsOutOfSequence = findOutSequence(msg, Option.empty[Int])
+    val itemsOutOfSequence = ReaderHelper.findOutSequence(msg, Option.empty[Int])
 
     if (itemsOutOfSequence.nonEmpty) {
       log.info("{} Items were out of sequence - here are the items {}", itemsOutOfSequence.size, itemsOutOfSequence.mkString(","))
