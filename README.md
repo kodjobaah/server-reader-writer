@@ -24,14 +24,14 @@ and then you can start and stop the reader/writer in any order you want.
 # Running
 
 ### server
-* cd <project-home>/server
+* cd server
 * ./target/universal/stage/bin/server
 
 
 ### reader
-* cd <project-home>/reader
+* cd reader
 * ./target/universal/stage/bin/reader
 
 ### writer
-* cd <project-home>/writer
+* cd writer
 * ./target/universal/stage/bin/writer
