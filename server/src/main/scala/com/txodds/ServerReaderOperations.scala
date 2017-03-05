@@ -5,7 +5,7 @@ import java.util
 import java.util.concurrent.LinkedBlockingQueue
 
 import com.redis.RedisClient
-import org.slf4j.{Logger, LoggerFactory}
+import org.slf4j.{ Logger, LoggerFactory }
 import org.zeromq.ZMQ
 
 import scala.collection.immutable.Seq

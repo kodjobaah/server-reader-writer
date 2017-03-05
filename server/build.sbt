@@ -10,6 +10,4 @@ javaOptions in Universal ++= Seq(
     "-Dcom.sun.management.jmxremote.ssl=false"
 )
 
-net.virtualvoid.sbt.graph.Plugin.graphSettings
-
 mainClass in (Compile, run) := Some("MainApp")

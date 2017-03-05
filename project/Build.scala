@@ -23,7 +23,7 @@ object TxOddsBuild extends Build {
     Defaults.coreDefaultSettings ++
       Seq(
         version := "1.0",
-        scalaVersion := "2.12.1",
+        scalaVersion := "2.11.7",
         scalacOptions := Seq(
           "-feature",
           "-language:implicitConversions",
@@ -34,12 +34,6 @@ object TxOddsBuild extends Build {
           "-Ywarn-adapted-args"
         )
       )
-
-  lazy val commonSettings = Seq(
-    organization := "com.txodds",
-    version := "0.0.1",
-    scalaVersion := "2.12.1"
-  )
 
   import Dependencies._
   val commonDeps = Seq (
@@ -65,20 +59,21 @@ object TxOddsBuild extends Build {
 
   lazy val core = (project in file("core"))
     .settings(libraryDependencies ++= commonDeps:_*)
-      .settings(resolvers ++= commonResolvers:_*)
+    .settings(defaultSettings.settings: _*)
+    .settings(resolvers ++= commonResolvers:_*)
 
   lazy val server = (project in file("server")).settings(libraryDependencies ++= commonDeps:_*)
-        .settings(addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0-M8"):_*)
-          .settings(addSbtPlugin("com.gilt" % "sbt-dependency-graph-sugar" % "0.7.5-1"):_*)
-            .settings(resolvers ++= commonResolvers:_*).dependsOn(core)
+     //   .settings(addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.6"):_*)
+        .settings(defaultSettings.settings: _*)
+        .settings(resolvers ++= commonResolvers:_*).dependsOn(core)
 
   lazy val writer = (project in file("writer")).settings(libraryDependencies ++= commonDeps:_*)
-    .settings(addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0-M8"):_*)
-    .settings(addSbtPlugin("com.gilt" % "sbt-dependency-graph-sugar" % "0.7.5-1"):_*)
+    //.settings(addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.6"):_*)
+    .settings(defaultSettings.settings: _*)
     .settings(resolvers ++= commonResolvers:_*).dependsOn(core)
 
   lazy val reader = (project in file("reader")).settings(libraryDependencies ++= commonDeps:_*)
-    .settings(addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0-M8"):_*)
-    .settings(addSbtPlugin("com.gilt" % "sbt-dependency-graph-sugar" % "0.7.5-1"):_*)
+    //.settings(addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.6"):_*)
+    .settings(defaultSettings.settings: _*)
     .settings(resolvers ++= commonResolvers:_*).dependsOn(core)
 }

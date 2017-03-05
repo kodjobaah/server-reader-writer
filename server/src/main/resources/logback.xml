@@ -25,12 +25,12 @@
         </encoder>
     </appender>
 
-    <appender name="zmq-monitor" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/tmp/zmq-monitor.log</file>
+    <appender name="server-monitor" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/tmp/server-monitor.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover. Make sure the path matches the one in the file element or else
              the rollover logs are placed in the working directory. -->
-            <fileNamePattern>/tmp/zmq-monitor_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>/tmp/server-monitor_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -42,8 +42,20 @@
         </encoder>
     </appender>
 
-    <logger name="com.txodds.MonitorConnection" level="INFO">
-        <appender-ref ref="zmq-monitor"/>
+    <logger name="com.txodds.montior.MonitorConnection" level="INFO">
+        <appender-ref ref="server-monitor"/>
+    </logger>
+
+    <logger name="com.txodds.ServerReaderOperations" level="DEBUG">
+        <appender-ref ref="server-monitor"/>
+    </logger>
+
+    <logger name="com.txodds.ServerReader" level="DEBUG">
+        <appender-ref ref="server-monitor"/>
+    </logger>
+
+    <logger name="com.txodds.ServerOperations" level="DEBUG">
+        <appender-ref ref="server-monitor"/>
     </logger>
 
     <root level="INFO">
