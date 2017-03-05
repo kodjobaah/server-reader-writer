@@ -104,3 +104,4 @@ project reader
 stage
 project writer
 stage
+quit

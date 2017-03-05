@@ -5,6 +5,7 @@ import java.util
 import java.util.concurrent.LinkedBlockingQueue
 
 import com.redis.RedisClient
+import org.slf4j.{Logger, LoggerFactory}
 import org.zeromq.ZMQ
 
 import scala.collection.immutable.Seq
@@ -13,6 +14,8 @@ import scala.collection.immutable.Seq
  * Created by baahko01 on 03/03/2017.
  */
 class ServerReaderOperations(context: ZMQ.Context, numbersQueue: LinkedBlockingQueue[Seq[Int]]) extends Thread {
+
+  val log: Logger = LoggerFactory.getLogger(classOf[ServerReaderOperations])
 
   var curList = Seq.empty[Int]
   val redis = new RedisClient("localhost", 6379)
@@ -59,13 +62,8 @@ class ServerReaderOperations(context: ZMQ.Context, numbersQueue: LinkedBlockingQ
     socket.send(end)
     redis.incr(ServerOperations.TotalItemsSentToReader)
 
-    println("----message server reader operations recieve[" + message + "]")
+    log.info("----message server reader operations recieve[" + message + "]")
 
-    //socket.send("ok")
-    /*
-    socket.send(identifier, ZMQ.SNDMORE)
-    socket.send("TERMINATE")
-     */
   }
 
   def retrieveRequest(socket: ZMQ.Socket): List[String] = {
@@ -75,13 +73,12 @@ class ServerReaderOperations(context: ZMQ.Context, numbersQueue: LinkedBlockingQ
     var more: Boolean = false
     var reply: Array[Byte] = Array[Byte]()
     do {
-      println("+serverReader start" + reply)
+      log.debug("+serverReader start {}", reply)
       reply = socket.recv()
       if (reply != null) {
-        println("+serverReader" + reply)
+        log.info("+serverReader {}", reply)
         val mess = new String(reply, Charset.forName("UTF-8"))
-        println(mess)
-        println(message)
+        log.debug(mess)
         message += mess
       } else {
       }
